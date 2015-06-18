@@ -39,7 +39,7 @@
 
   <div class="jumbotron">
     <div class="container text-center">
-      <a id="pdf-link" class="btn btn-default" href><i class="fa fa-arrow-down"></i> Download PDF</a>
+      <a id="pdf-link" class="btn btn-default hidden-print" href><i class="fa fa-arrow-down"></i> Download PDF</a>
 
       <!-- breadcrumb -->
       <h4>
@@ -51,8 +51,8 @@
         <a id="division-name" href="{{ overview_url }}" title="Go back to overview page">{{ division.name }}</a>
       </h2>
 
-      <a class="btn btn-default btn-xs" href="{{ overview_url }}" title="Go back to overview page">Overview</a>
-      <ul id="hazard-types-list" class="horizontal list-unstyled hazards" role="tablist">
+      <a class="btn btn-default btn-xs hidden-print" href="{{ overview_url }}" title="Go back to overview page">Overview</a>
+      <ul id="hazard-types-list" class="horizontal list-unstyled hazards hidden-print" role="tablist">
         {% for hazard in hazards %}
           {{ hazard_type(hazard) }}
         {% endfor %}
@@ -61,6 +61,10 @@
   </div>
 
   <div class="container">
+
+  <div class="visible-xs-block">xs</div>
+  <div class="visible-sm-block">sm</div>
+  <div class="visible-md-block">md</div>
     <div class="row">
       <div class="col-md-7">
         {% if hazard %}
@@ -98,14 +102,16 @@
           {% endfor %}
         {% endif %}
       </div>
-      <div class="col-md-5">
-        <div class="well">
-          <div id="map">
-            {% if parent_division %}
-            <a id="map-drillup" class="btn btn-default btn-xs drillup control" href="{{ parent_url }}">
-              Zoom out to {{ parent_division.name }}
-            </a>
-            {% endif %}
+      <div class="col-md-5 page-break">
+        <div class="well print-col-sm-8 print-col-sm-offset-2">
+          <div id="map-container">
+            <div id="map">
+              {% if parent_division %}
+              <a id="map-drillup" class="btn btn-default btn-xs drillup control hidden-print" href="{{ parent_url }}">
+                Zoom out to {{ parent_division.name }}
+              </a>
+              {% endif %}
+            </div>
           </div>
           {% if hazard %}
           <div class="text-center">
@@ -142,7 +148,7 @@
           {% endif %}
         </div>
         {% if hazard.additionalinfo_associations %}
-        <div class="well">
+        <div class="well hidden-print print-col-sm-12">
           <h3>Further resources</h3>
           For further information the following resources could be consulted:
           <ul>
@@ -156,7 +162,7 @@
           </ul>
         </div>
         {% endif %}
-        <div class="text-center">
+        <div class="text-center print-col-sm-12">
           <a href="//www.gfdrr.org/" class="logo-gfdrr">Logo GFDRR</a>
         </div>
       </div>
