@@ -4,6 +4,7 @@ cache:
   directories:
     - $HOME/.cache/pip
     - $HOME/build/GFDRR/thinkhazard/.build/venv
+    - $HOME/build/GFDRR/thinkhazard/node_modules
 
 python:
 - 2.7
