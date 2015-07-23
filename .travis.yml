@@ -3,7 +3,7 @@ language: python
 cache:
   directories:
     - $HOME/.cache/pip
-    - $HOME/thinkhazard/.build/venv/lib/python2.7/site-packages
+    - $HOME/build/GFDRR/thinkhazard/.build/venv
 
 python:
 - 2.7
@@ -15,6 +15,7 @@ install:
 - createuser www-data --no-superuser --no-createdb --no-createrole -U postgres
 - createdb -O www-data thinkhazard_tests -U postgres
 - psql -d thinkhazard_tests -c "CREATE EXTENSION postgis;" -U postgres
+
 
 script:
 - make check
