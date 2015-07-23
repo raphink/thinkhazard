@@ -3,6 +3,7 @@ language: python
 cache:
   directories:
     - $HOME/.cache/pip
+    - $HOME/thinkhazard/.build/venv/lib/python2.7/site-packages
 
 python:
 - 2.7
