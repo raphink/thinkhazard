@@ -19,7 +19,7 @@
       })
     ]
   });
-  map.getView().fitExtent(app.divisionBounds, map.getSize());
+  map.getView().fit(app.divisionBounds, map.getSize());
 
   var vectorLayer = addVectorLayer(map, app.mapUrl);
 
@@ -32,6 +32,8 @@
       var feature = false;
       map.forEachFeatureAtPixel(pixel, function(f) {
         feature = f;
+      }, null, function(layer) {
+        return layer == vectorLayer;
       });
       map.getTargetElement().style.cursor = feature ? 'zoom-in' : '';
 
@@ -50,6 +52,8 @@
     map.on('click', function(e) {
       var feature = map.forEachFeatureAtPixel(e.pixel, function(feature) {
         return feature;
+      }, null, function(layer) {
+        return layer == vectorLayer;
       });
       if (feature) {
         var code = feature.get('code');
@@ -79,7 +83,7 @@
         fill: fillStyle,
         stroke: new ol.style.Stroke({
           color: '#333',
-          width: 1
+          width: 0.5
         })
       })
     ];
@@ -90,16 +94,38 @@
       fillStyle.setColor(fillColor);
       return styles;
     };
-    var layer = new ol.layer.Vector({
-      style: styleFn,
-      source: new ol.source.Vector({
-        url: url,
-        format: new ol.format.GeoJSON({
-          defaultDataProjection: 'EPSG:3857'
-        })
+    var source = new ol.source.Vector({
+      url: url,
+      format: new ol.format.GeoJSON({
+        defaultDataProjection: 'EPSG:3857'
       })
     });
+    var layer = new ol.layer.Vector({
+      style: styleFn,
+      source: source
+    });
     map.addLayer(layer);
+
+    var overlay = new ol.layer.Vector({
+      style: new ol.style.Style({
+        stroke: new ol.style.Stroke({
+          color: '#333',
+          width: 1.5
+        })
+      }),
+      source: new ol.source.Vector()
+    });
+    overlay.setMap(map);
+
+    // Remove the feature corresponding to current division and keep only the
+    // subdivisions
+    // Use the division shape as an overlay
+    source.on('addfeature', function(evt) {
+      if (evt.feature.get('outline') === true) {
+        source.removeFeature(evt.feature);
+        overlay.getSource().addFeature(evt.feature);
+      }
+    });
     return layer;
   }
 
