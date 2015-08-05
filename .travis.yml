@@ -12,3 +12,5 @@ script:
 
 after_script:
 - make deb
+- gem install package_cloud
+- package_cloud push raphink/test/debian/jessie/dev thinkhazard_0.0_amd64.deb
