@@ -12,5 +12,6 @@ script:
 
 after_script:
 - make deb
-- gem install package_cloud
-- package_cloud push raphink/test/debian/jessie/dev thinkhazard_0.0_amd64.deb
+- openssl aes-256-cbc -K $encrypted_dd6e068c3ff6_key -iv $encrypted_dd6e068c3ff6_iv -in id_rsa.enc -out id_rsa -d
+- scp -i id_rsa thinkhazard_0.0_amd64.deb reprepro@pkg.camptocamp.net:/var/packages/apt/incoming
+- ssh -i id_rsa pkg.camptocamp.net 'sudo -u reprepro /usr/bin/reprepro -b /var/packages/apt includedeb /var/packages/apt/incoming/thinkhazard_0.0_amd64.deb'
